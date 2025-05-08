@@ -6,9 +6,13 @@ import { jwtDecode } from 'jwt-decode';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const login = async () => {
+    
+    setLoading(true);
     try {
       const res = await api.post('/login', { email, senha });
       const { token } = res.data;
@@ -19,6 +23,9 @@ export default function Login() {
       else navigate('/relatorios');
     } catch (e) {
       alert('Login inválido!');
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -41,8 +48,9 @@ export default function Login() {
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded mb-2 w-64"
         onClick={login}
+        disabled={loading}
       >
-        Entrar
+        {loading ? 'Entrando...' : 'Entrar'}
       </button>
       <button
         className="bg-gray-300 text-gray-800 px-4 py-2 rounded w-64"

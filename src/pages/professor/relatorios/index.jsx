@@ -13,40 +13,47 @@ export default function ProfessorRelatorios() {
 
   return (
     <>
-    <Navbar />
-    
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Relatórios</h1>
-      <table className="w-full border">
-        <thead>
-          <tr className="bg-gray-200">
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Data</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {relatorios.map(rel => (
-            <tr key={rel.id} className="text-center border-b h-12">
-              <td>{rel.id}</td>
-              <td>{rel.nome}</td>
-              <td>{rel.email}</td>
-              <td>{new Date(rel.data).toLocaleString()}</td>
-              <td>
-                <button
-                  className="bg-blue-500 text-white px-3 py-1 rounded"
-                  onClick={() => navigate(`/relatorio/${rel.id}`)}
-                >
-                  Ver detalhes
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      <Navbar />
+
+      <div className="p-6">
+        <h1 className="text-2xl font-bold mb-4">Relatórios</h1>
+        {relatorios?.length > 0 ? (
+          <table className="w-full border">
+            <thead>
+              <tr className="bg-gray-200">
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Data</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {relatorios.map(rel => (
+                <tr key={rel.id} className="text-center border-b h-12">
+                  <td>{rel.id}</td>
+                  <td>{rel.nome}</td>
+                  <td>{rel.email}</td>
+                  <td>{new Date(rel.data).toLocaleString()}</td>
+                  <td>
+                    <button
+                      className="bg-blue-500 text-white px-3 py-1 rounded"
+                      onClick={() => navigate(`/relatorio/${rel.id}`)}
+                    >
+                      Ver detalhes
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : ( 
+          <div className="w-full text-center text-gray-500 py-8 border rounded-md bg-gray-50">
+            Nenhum relatório encontrado.
+          </div>
+        )}
+
+      </div>
 
     </>
   );
