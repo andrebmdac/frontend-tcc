@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../../../components/navbar';
 import api from '../../../api/axios';
+import { jwtDecode } from 'jwt-decode';
 
 export default function AlunoUpload() {
   const [file, setFile] = useState(null);
@@ -32,8 +33,30 @@ export default function AlunoUpload() {
 
       setLoading(true);
       try {
+        const token = localStorage.getItem('token');
+        const decoded = jwtDecode(token);
+        
         const res = await api.post('/avaliar-documento', { prompt });
+        const respostaIa = res.data;
+
+        await api.post('/relatorio', {
+          id_usuario: decoded.id,
+          nota1: respostaIa.Nota1,
+          desc1: respostaIa.Descricao1,
+          nota2: respostaIa.Nota2,
+          desc2: respostaIa.Descricao2,
+          nota3: respostaIa.Nota3,
+          desc3: respostaIa.Descricao3,
+          nota4: respostaIa.Nota4,
+          desc4: respostaIa.Descricao4,
+          nota5: respostaIa.Nota5,
+          desc5: respostaIa.Descricao5,
+        });
+
+        alert("Relatorio enviado com sucesso!");
         console.log('🧠 Resposta da IA:', res.data); // ✅ aqui vem { Nota1: ..., Descricao1: ... }
+
+        clearForm();
       } catch (err) {
         console.error('Erro ao chamar IA:', err);
         alert('Erro ao processar o arquivo.');
